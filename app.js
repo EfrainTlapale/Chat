@@ -28,7 +28,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', hbs({ defaultLayout: 'layout' }));
 app.set('view engine', 'handlebars');
 
-app.use(morgan('dev'));
+if (app.get('env')) {
+  app.use(morgan('dev'));
+}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('secret'));
