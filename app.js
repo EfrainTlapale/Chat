@@ -7,7 +7,6 @@ var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
 var mongoose = require('mongoose');
-var morgan = require('morgan');
 var config = require('./config');
 
 var app = express();
@@ -29,6 +28,7 @@ app.engine('handlebars', hbs({ defaultLayout: 'layout' }));
 app.set('view engine', 'handlebars');
 
 if (app.get('env') === 'development') {
+  var morgan = require('morgan');
   app.use(morgan('dev'));
 }
 app.use(bodyParser.json());
