@@ -6,27 +6,34 @@ var hbs = require('express-handlebars');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
+var morgan = require('morgan');
+var config = require('./config');
 
-mongoose.connect('mongodb://efra:admin@ds023495.mlab.com:23495/testing', ()=>{
+var app = express();
+
+var http = require('http').Server(app);
+require('./socketio')(http);
+
+
+mongoose.connect(config.db, () => {
   console.log('DB connected');
 });
 
 var routes = require('./routes');
 
-var app = express();
+
 
 app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', hbs({defaultLayout:'layout'}));
+app.engine('handlebars', hbs({ defaultLayout: 'layout' }));
 app.set('view engine', 'handlebars');
 
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'public')));app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'))); app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
   secret: 'topsecret',
@@ -34,23 +41,23 @@ app.use(session({
   resave: true
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+//Pasport config
+require('./passport')(app);
 
 
 app.use(expressValidator({
-  errorFormatter: function(param, msg, value) {
-      var namespace = param.split('.')
-      , root    = namespace.shift()
+  errorFormatter: function (param, msg, value) {
+    var namespace = param.split('.')
+      , root = namespace.shift()
       , formParam = root;
 
-    while(namespace.length) {
+    while (namespace.length) {
       formParam += '[' + namespace.shift() + ']';
     }
     return {
-      param : formParam,
-      msg   : msg,
-      value : value
+      param: formParam,
+      msg: msg,
+      value: value
     };
   }
 }));
@@ -68,12 +75,12 @@ app.use(function (req, res, next) {
 
 app.use('/', routes);
 
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
   res.status(404);
   res.render('404');
 });
 app.set('port', (process.env.PORT || 3000));
 
-app.listen(app.get('port'), () =>{
+http.listen(app.get('port'), () => {
   console.log('Server started');
 });

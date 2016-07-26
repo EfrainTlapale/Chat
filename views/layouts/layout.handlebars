@@ -14,12 +14,30 @@
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">Logo</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="/users/login">Login</a></li>
-        <li><a href="/users/register">Register</a></li>
-        <li><a href="/users/logout">Logout</a></li>
+        {{#if user}}
+          <li id="username">{{user.name}}</li>
+          <li><a href="/users/logout">Logout</a></li>
+        {{else}}
+          <li><a href="/users/login">Login</a></li>
+          <li><a href="/users/register">Register</a></li>
+        {{/if}}
+        
+        
       </ul>
     </div>
   </nav>
+
+  {{#if success_msg}}
+    <div class="row  light-green lighten-2" > {{success_msg}} </div>
+  {{/if}}  
+
+  {{#if error_msg}}
+    <div class="row  light-green lighten-2 grey-text text-lighten-5" > {{error_msg}} </div>
+  {{/if}} 
+
+  {{#if error}}
+    <div class="row red lighten-3 grey-text text-lighten-5" > {{error}} </div>
+  {{/if}} 
 
   <div class="container">
     {{{body}}}
@@ -27,5 +45,7 @@
 
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <script src="/js/chat.js"></script>
 </body>
 </html>
