@@ -12,7 +12,6 @@ mainRouter.get('/', auth, (req, res) => {
   Message.find({})
   .populate('from')
   .exec((err, data)=>{
-    console.log(data);
     res.render('index',{
       messages: data
     });
