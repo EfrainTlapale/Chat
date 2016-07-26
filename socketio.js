@@ -1,3 +1,5 @@
+Message = require('./models/message');
+
 module.exports = (http) => {
   var io = require('socket.io')(http);
 
@@ -8,6 +10,7 @@ module.exports = (http) => {
     });
 
     socket.on('chat message', (msg)=>{
+      
       console.log('Message: ' + msg);
       io.emit('chat message', {msg: msg, name: socket.name});
     });

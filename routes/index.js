@@ -5,6 +5,7 @@ var auth = require('../helpers/auth');
 // mainRouter.use('/',require('./name of router'));
 mainRouter.get('/', auth, (req, res) => {
   res.cookie('name', req.user.name, {signed: true});
+  res.cookie('i', req.user._id, {signed: true});
   res.render('index');
 });
 
