@@ -11,5 +11,6 @@ socket.on('chat message', function(data){
 });
 
 $( document ).ready(function() {
+  console.log(document.cookie);
   socket.emit('new user', $('#username').text());
 });

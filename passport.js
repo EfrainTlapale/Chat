@@ -17,7 +17,6 @@ module.exports = function(app){
         if (!user) {
           return done(null, false, { message: 'Incorrect username.' });
         }
-        console.log('funcion ' + user.validPassword(password));
 
         bcrypt.compare(password, user.password, (err, isMathc) => {
           if (err) return done(null, false, { message: 'Incorrect password.' });
