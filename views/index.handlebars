@@ -2,10 +2,9 @@
 <h1>Chat</h1>
 
 <ul class="collection" id="messages">
-  <li class="collection-item">Alvin</li>
-  <li class="collection-item">Alvin</li>
-  <li class="collection-item">Alvin</li>
-  <li class="collection-item">Alvin</li>
+   {{#each messages}}
+    <li class="collection-item">{{this.from.name}} says: {{this.body}}</li>
+  {{/each}}
 </ul>
 
 <div class="row">
